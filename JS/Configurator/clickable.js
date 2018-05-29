@@ -1,6 +1,7 @@
 //This is a clickable class. It's basically the base for every object in our game
 
 var clickables = [];
+var isPressingClickable = false;
 
 function getClickableID(clickable) {
     let index = -1;
@@ -24,6 +25,9 @@ class Clickable {
         this.x      = x;
         this.y      = y;
 
+        this.realX  = x;
+        this.realY  = y;
+
         this.anchor     = anchor;
         this.anchorX    = 0.5;
         this.anchorY    = 0.5;
@@ -40,7 +44,7 @@ class Clickable {
         // only render and update if its active
         this.isActive               = true;
 
-        this.hoverScale     = 1.25;
+        this.hoverScale     = 1.05;
         this.hoverScaler    = 1;
 
         this.standardWidth  = this.width;
@@ -79,7 +83,8 @@ class Clickable {
         if (this.drawFrame) {
             strokeWeight(1);
             stroke(50);
-            fill(234, 231, 213);
+            //fill(234, 231, 213);
+            fill(255);
             rect(ax - this.width * this.anchorX, ay - this.height * this.anchorY, this.width, this.height, 10);
         }
 
@@ -96,46 +101,43 @@ class Clickable {
     }
 
     update() {
-        if (this.isActive) {
-            let ax = 0;
-            let ay = 0;
-    
+        if (this.isActive) {    
             switch (this.anchor) {
                 case anchorTypes.TOPLEFT:
-                    ax = this.x;
-                    ay = this.y;
+                    this.realX = this.x;
+                    this.realY = this.y;
                     break;
                 case anchorTypes.LEFT:
-                    ax = this.x;
-                    ay = this.y + height/2;
+                    this.realX = this.x;
+                    this.realY = this.y + height/2;
                     break;    
                 case anchorTypes.BOTTOMLEFT:
-                    ax = this.x;
-                    ay = this.y + height;
+                    this.realX = this.x;
+                    this.realY = this.y + height;
                     break;      
                 case anchorTypes.TOP:
-                    ax = this.x + width/2;
-                    ay = this.y;
+                    this.realX = this.x + width/2;
+                    this.realY = this.y;
                     break;
                 case anchorTypes.CENTER:
-                    ax = this.x + width/2;
-                    ay = this.y + height/2;
+                    this.realX = this.x + width/2;
+                    this.realY = this.y + height/2;
                     break;    
                 case anchorTypes.BOTTOM:
-                    ax = this.x + width/2;
-                    ay = this.y + height;
+                    this.realX = this.x + width/2;
+                    this.realY = this.y + height;
                     break;      
                 case anchorTypes.TOPRIGHT:
-                    ax = this.x + width;
-                    ay = this.y;
+                    this.realX = this.x + width;
+                    this.realY = this.y;
                     break;
                 case anchorTypes.RIGHT:
-                    ax = this.x + width;
-                    ay = this.y + height/2;
+                    this.realX = this.x + width;
+                    this.realY = this.y + height/2;
                     break;    
                 case anchorTypes.BOTTOMRIGHT:
-                    ax = this.x + width;
-                    ay = this.y + height;
+                    this.realX = this.x + width;
+                    this.realY = this.y + height;
                     break;    
             }
             
@@ -143,7 +145,7 @@ class Clickable {
                 this.onPressDown = false;
                 this.onPressUp = false;
 
-                if ((mouseX >= (ax - this.width * this.anchorX)) && (mouseX <= (ax + this.width * (1-this.anchorX))) && (mouseY >= (ay - this.height * this.anchorY)) && (mouseY <= (ay + this.height * (1-this.anchorY)))) {
+                if ((mouseX >= (this.realX - this.width * this.anchorX)) && (mouseX <= (this.realX + this.width * (1-this.anchorX))) && (mouseY >= (this.realY - this.height * this.anchorY)) && (mouseY <= (this.realY + this.height * (1-this.anchorY)))) {
                     this.mouseIsOver = true;
                     cursor(HAND);
                 } else {
@@ -166,20 +168,20 @@ class Clickable {
                     }
                 }
 
-                if (this.mouseIsOver && this.overPressed) {
-                    if (!this.isPressed) { this.onPressDown = true; this.onPressed(); }
+                if (this.mouseIsOver && this.overPressed && !isPressingClickable) {
+                    if (!this.isPressed) { this.onPressDown = true; this.onPressed(); isPressingClickable = true }
                     this.isPressed = true;
                 } else {
                     if (this.onlyUnpressOverButton) {
                         if (!this.offPressed && this.mouseIsOver) {
-                            if (this.isPressed) { this.onPressUp = true; this.onUnpressed(); }
+                            if (this.isPressed) { this.onPressUp = true; this.onUnpressed(); isPressingClickable = false }
                             this.isPressed = false;
                         } else {
                             this.isPressed = false;
                         }
                     } else {
                         if (!this.overPressed) {
-                            if (this.isPressed) { this.onPressUp = true; this.onUnpressed(); }
+                            if (this.isPressed) { this.onPressUp = true; this.onUnpressed(); isPressingClickable = false }
                             this.isPressed = false;
                         }
                     }
@@ -189,14 +191,14 @@ class Clickable {
                     this.pressed();
                 }
 
-                if (this.mouseIsOver) {
+                if (this.mouseIsOver && !isPressingClickable) {
                     this.hoverScaler += (this.hoverScale - this.hoverScaler) * 0.5;
                 } else {
                     this.hoverScaler += (1 - this.hoverScaler) * 0.5;
                 }
 
                 if (this.wasHovering != this.mouseIsOver) {
-                    if (this.mouseIsOver) {
+                    if (this.mouseIsOver && !isPressingClickable) {
                         this.onHovered();
                     }else{
                         this.onStopHovered();
@@ -213,7 +215,8 @@ class Clickable {
                 this.move(this.targetX, this.targetY, this.speed);
             }
 
-            this.render(ax,ay);
+            this.render(this.realX,this.realY);
+            this.tick();
         }
     }
 
@@ -237,6 +240,14 @@ class Clickable {
         return;
     }
 
+    onArrived() {
+
+    }
+
+    tick() {
+        
+    }
+
     moveTo(x, y, speed) {
         this.isMoving   = true;
         this.speed      = speed;
@@ -256,6 +267,8 @@ class Clickable {
 
             this.isMoving = false;
             this.speed = 0;
+
+            this.onArrived();
         }
     }
 
@@ -266,6 +279,24 @@ class Clickable {
             delete clickables[i];
             clickables.splice(i, 1);
         }
+    }
+
+    setToFront () {
+        let i = getClickableID(this);
+
+        if (i > -1) {
+            clickables.splice(i, 1);
+            clickables.splice(clickables.length - 1,0,this);
+        }       
+    }
+
+    setToBack () {
+        let i = getClickableID(this);
+
+        if (i > -1) {
+            clickables.splice(i, 1);
+            clickables.splice(0,0,this);
+        }       
     }
 }
 

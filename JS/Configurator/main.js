@@ -12,35 +12,62 @@ let anchorTypes = {
     BOTTOMRIGHT: 8,
 };
 
+let NewFurnitureClickable;
+let GarbageCan;
+
+let chairtype = new FurnitureType();
+chairtype.name = "chair"
+let tabletype = new FurnitureType();
+tabletype.name = "table"
+
+let currentFurnitureTypeID = 0;
+let currentFurnitureType = FurnitureTypes[currentFurnitureTypeID];
+
 function setup() {
-    createCanvas(1000, 700);
+    createCanvas(1000, 900);
     background(200);
 
-    for (i = 0; i < 5; i++) {
-        let button;
-        button = new Clickable(gridSize/2 * (i + 1), gridSize/2, gridSize, gridSize);
-        button.text = "Chair";
+    NewFurnitureClickable = new Clickable(0,-100,100,100,anchorTypes.BOTTOM);
+    NewFurnitureClickable.text = currentFurnitureType.name;
+    NewFurnitureClickable.onPressed = function () {
+        let newFurniture = new Furniture(this.realX,this.realY,100,100);
+        newFurniture.text = currentFurnitureType.name;
+        newFurniture.setToFront();
 
-        button.pressed = function () {
-            this.hoverScale = 1;
-            this.hoverScaler = 1
-
-            let xGrid = Math.round((mouseX + gridSize/2)/gridSize);
-            let yGrid = Math.round((mouseY + gridSize/2)/gridSize);
-
-            xGrid = Math.max(1, Math.min(xGrid, 10))
-            yGrid = Math.max(1, Math.min(yGrid, 7))
-
-            this.moveTo(
-                xGrid * gridSize - gridSize/2,
-                yGrid * gridSize - gridSize/2,
-                0.65)
+        this.pressed = function () {
+            newFurniture.pressed();
         }
 
-        button.onUnpressed = function () {
-            this.hoverScale = 1.25;
+        this.onUnpressed = function () {
+            newFurniture.onUnpressed();
+            this.pressed = null;
         }
     }
+
+    NextFurnitureClickable = new Clickable(100,-100,75,75,anchorTypes.BOTTOM);
+    NextFurnitureClickable.text = ">";
+    NextFurnitureClickable.onUnpressed = function () {
+        currentFurnitureTypeID++;
+        if (currentFurnitureTypeID > FurnitureTypes.length - 1) {currentFurnitureTypeID = 0}
+
+        currentFurnitureType = FurnitureTypes[currentFurnitureTypeID];
+        NewFurnitureClickable.text = currentFurnitureType.name;
+    }
+
+    PrevFurnitureClickable = new Clickable(-100,-100,75,75,anchorTypes.BOTTOM);
+    PrevFurnitureClickable.text = "<";
+    PrevFurnitureClickable.onUnpressed = function () {
+        currentFurnitureTypeID--;
+        if (currentFurnitureTypeID < 0) {currentFurnitureTypeID = FurnitureTypes.length - 1}
+
+        currentFurnitureType = FurnitureTypes[currentFurnitureTypeID];
+        NewFurnitureClickable.text = currentFurnitureType.name;
+    }
+
+    GarbageCan = new Clickable(100,-100,100,100,anchorTypes.BOTTOMLEFT);
+    GarbageCan.text = "Garbage";
+    GarbageCan.isClickable = false;
+    GarbageCan.setToBack();
 }
 
 function draw() {
