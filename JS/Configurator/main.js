@@ -15,16 +15,6 @@ let anchorTypes = {
 let NewFurnitureClickable;
 let GarbageCan;
 
-let chairtype = new FurnitureType();
-chairtype.name = "chair";
-let tabletype = new FurnitureType();
-tabletype.name = "table";
-tabletype.sizeX = 3;
-tabletype.sizeY = 2;
-let couchtype = new FurnitureType();
-couchtype.name = "couch";
-couchtype.sizeX = 2;
-
 let currentFurnitureTypeID = 0;
 let currentFurnitureType = FurnitureTypes[currentFurnitureTypeID];
 
