@@ -72,6 +72,15 @@ class Clickable {
         this.text = '';
 
         this.setRenderLayer("default");
+
+        this.delete = () => {
+            clickables = clickables.filter(e => e !== this);
+    
+            let oldlayer = clickableRenderLayers.filter((x) => {return x.name == this.renderLayer})[0];
+            oldlayer.objects = oldlayer.objects.filter(e => e !== this);
+    
+            delete this;
+        }
     }
 
     setRenderLayer(name) {
@@ -264,15 +273,6 @@ class Clickable {
 
             this.onArrived();
         }
-    }
-
-    delete() {
-        clickables = clickables.filter(e => e !== this);
-
-        let oldlayer = clickableRenderLayers.filter((x) => {return x.name == this.renderLayer})[0];
-        oldlayer.objects = oldlayer.objects.filter(e => e !== this);
-
-        delete this;
     }
 
     setToFront () {

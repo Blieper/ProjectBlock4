@@ -1,13 +1,4 @@
 let furniture = [];
-let takenSlots = new Array(10);
-for (i = 1; i < 11; i++) {
-    takenSlots[i] = [];
-    for (j = 1; j < 8; j++) {
-        takenSlots[i][j] = false;
-    }
-}
-
-console.table(takenSlots);
 
 class Furniture extends Clickable {
 
@@ -23,6 +14,11 @@ class Furniture extends Clickable {
 
         this.currentGridX = 0;
         this.currentGridY = 0;
+
+        this.desiredGridX = 0;
+        this.desiredGridY = 0;
+        this.lastDesiredGridX = 0;
+        this.lastDesiredGridY = 0;       
 
         this.inGarbage = false;
 
@@ -50,14 +46,17 @@ class Furniture extends Clickable {
             xGrid = Math.max(this.gridSizeX, Math.min(xGrid, 10));
             yGrid = Math.max(this.gridSizeY, Math.min(yGrid, 7));
 
-            this.targetGridX = xGrid
-            this.targetGridY = yGrid
+            this.targetGridX = xGrid;
+            this.targetGridY = yGrid;
 
-            let moveGridX = xGrid - (this.gridSizeX-1)/2
-            let moveGridY = yGrid - (this.gridSizeY-1)/2
+            let moveGridX = xGrid - (this.gridSizeX-1)/2;
+            let moveGridY = yGrid - (this.gridSizeY-1)/2;
+
+            this.desiredGridX = moveGridX;
+            this.desiredGridY = moveGridY;
 
             if (mouseY < 700) {
-                this.moveToGrid(moveGridX,moveGridY);  
+                this.moveToGrid(this.desiredGridX,this.desiredGridY);  
             } else {
                 this.moveTo(mouseX,mouseY, 0.25);  
             }
@@ -86,9 +85,6 @@ class Furniture extends Clickable {
 
             if (this.targetY > 750) {
                 this.throwInGarbage();
-                if (takenSlots[this.currentGridX]) {
-                    takenSlots[this.currentGridX][this.currentGridY] = false; 
-                }
                 return;
             } 
 
@@ -96,34 +92,68 @@ class Furniture extends Clickable {
                 if (this.justCreated == true) {
                     this.throwInGarbage();
                 } else {
-                    this.moveToGrid(this.currentGridX,this.currentGridY);
+                    this.moveToGrid(this.lastDesiredGridX,this.lastDesiredGridY);
                 }
 
                 return;
             } 
 
-            if (takenSlots[this.targetGridX][this.targetGridY] == false) {
+            let success = true;
+
+            for (let f of furniture) {
+                if (f === this) {continue;}
+        
+                for (let x1 = 0; x1 < this.gridSizeX; x1++) {
+                    for (let y1 = 0; y1 < this.gridSizeY; y1++) {
+                    
+                        let testX = this.targetGridX - x1;
+                        let testY = this.targetGridY - y1;
+
+                        for (let x2 = 0; x2 < f.gridSizeX; x2++) {
+                            for (let y2 = 0; y2 < f.gridSizeY; y2++) {
+                            
+                                let testX2 = f.targetGridX - x2;
+                                let testY2 = f.targetGridY - y2;
+        
+                                if (testX == testX2 && testY == testY2) {
+                                    success = false;
+                                } 
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (success) {
+                this.currentGridX = this.targetGridX;
+                this.currentGridY = this.targetGridY;
+
+                this.lastDesiredGridX = this.desiredGridX;
+                this.lastDesiredGridY = this.desiredGridY;
+
                 if (this.justCreated == true) {
                     this.justCreated = false;
                     furniture.push(this);
                 } else {
-                    takenSlots[this.currentGridX][this.currentGridY] = false;                  
-                }
-
-                this.currentGridX = this.targetGridX;
-                this.currentGridY = this.targetGridY;       
-                
-                takenSlots[this.currentGridX][this.currentGridY] = true;  
-
+                    this.moveToGrid(this.lastDesiredGridX,this.lastDesiredGridY);
+                }    
             } else {
                 if (this.justCreated == true) {
                     this.throwInGarbage();
                 } else {
-                    this.moveToGrid(this.currentGridX,this.currentGridY);
+                    this.moveToGrid(this.lastDesiredGridX,this.lastDesiredGridY);
                 }
             }
         }
+
+        let oldDelete = this.delete;
+        this.delete = () => {
+            furniture = furniture.filter(e => e !== this);
+
+            oldDelete();
+        }
     }
+
 
     throwInGarbage () {
         this.moveTo(GarbageCan.realX,GarbageCan.realY,0.15);
