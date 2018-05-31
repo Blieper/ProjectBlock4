@@ -18,29 +18,60 @@ class Furniture extends Clickable {
         this.targetGridX = 0;
         this.targetGridY = 0;
 
+        this.gridSizeX = 1;
+        this.gridSizeY = 1;
+
         this.currentGridX = 0;
         this.currentGridY = 0;
 
         this.inGarbage = false;
 
+        this.offsetGrabX = 0;
+        this.offsetGrabY = 0;   
+
+        this.onPressed = function () {
+            let deltaX = ((this.realX + this.standardWidth/2) - mouseX);
+            deltaX = Math.floor(deltaX/gridSize);
+
+            let deltaY =  ((this.realY + this.standardHeight/2) - mouseY);
+            deltaY = Math.floor(deltaY/gridSize);
+              
+            this.offsetGrabX = deltaX;
+            this.offsetGrabY = deltaY;  
+        }
+
         this.pressed = function () {
             this.hoverScale = 1;
             this.hoverScaler = 1;
 
-            let xGrid = Math.round((mouseX + gridSize/2)/gridSize);
-            let yGrid = Math.round((mouseY + gridSize/2)/gridSize);
+            let xGrid = Math.round((mouseX + gridSize/2)/gridSize) + this.offsetGrabX;
+            let yGrid = Math.round((mouseY + gridSize/2)/gridSize) + this.offsetGrabY;
 
-            xGrid = Math.max(1, Math.min(xGrid, 10))
-            yGrid = Math.max(1, Math.min(yGrid, 7))
+            xGrid = Math.max(1, Math.min(xGrid, 10));
+            yGrid = Math.max(1, Math.min(yGrid, 7));
 
             this.targetGridX = xGrid
             this.targetGridY = yGrid
 
+            let moveGridX = xGrid - (this.gridSizeX-1)/2
+            let moveGridY = yGrid - (this.gridSizeY-1)/2
+
             if (mouseY < 700) {
-                this.moveToGrid(xGrid,yGrid);  
+                this.moveToGrid(moveGridX,moveGridY);  
             } else {
                 this.moveTo(mouseX,mouseY, 0.25);  
             }
+        }
+
+        this.setGridDimension = function (x, y) {
+            this.gridSizeX = x;
+            this.gridSizeY = y;  
+            
+            this.width  = gridSize * x;
+            this.height = gridSize * y;
+
+            this.standardWidth  = gridSize * x;
+            this.standardHeight = gridSize * y;
         }
 
         this.moveToGrid = function (xGrid,yGrid) {
@@ -104,9 +135,4 @@ class Furniture extends Clickable {
     onHovered () {
         this.setToFront();
     }
-
-    pressed() {
-        return;
-    }
-
 }

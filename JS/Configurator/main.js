@@ -16,9 +16,14 @@ let NewFurnitureClickable;
 let GarbageCan;
 
 let chairtype = new FurnitureType();
-chairtype.name = "chair"
+chairtype.name = "chair";
 let tabletype = new FurnitureType();
-tabletype.name = "table"
+tabletype.name = "table";
+tabletype.sizeX = 3;
+tabletype.sizeY = 2;
+let couchtype = new FurnitureType();
+couchtype.name = "couch";
+couchtype.sizeX = 2;
 
 let currentFurnitureTypeID = 0;
 let currentFurnitureType = FurnitureTypes[currentFurnitureTypeID];
@@ -31,6 +36,7 @@ function setup() {
     NewFurnitureClickable.text = currentFurnitureType.name;
     NewFurnitureClickable.onPressed = function () {
         let newFurniture = new Furniture(this.realX,this.realY,100,100);
+        newFurniture.setGridDimension(currentFurnitureType.sizeX, currentFurnitureType.sizeY);
         newFurniture.text = currentFurnitureType.name;
         newFurniture.setRenderLayer("furniture");
 
