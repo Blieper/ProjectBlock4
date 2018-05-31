@@ -32,7 +32,7 @@ function setup() {
     NewFurnitureClickable.onPressed = function () {
         let newFurniture = new Furniture(this.realX,this.realY,100,100);
         newFurniture.text = currentFurnitureType.name;
-        newFurniture.setToFront();
+        newFurniture.setRenderLayer("furniture");
 
         this.pressed = function () {
             newFurniture.pressed();
@@ -67,7 +67,6 @@ function setup() {
     GarbageCan = new Clickable(100,-100,100,100,anchorTypes.BOTTOMLEFT);
     GarbageCan.text = "Garbage";
     GarbageCan.isClickable = false;
-    GarbageCan.setToBack();
 }
 
 function draw() {
@@ -76,9 +75,17 @@ function draw() {
     background(200);
 
     // Update all clickables
-    for (let i = 0; i < clickables.length; i++) {
-        if (clickables[i] != undefined) {
-            clickables[i].update();
+    // for (let i = 0; i < clickables.length; i++) {
+    //     if (clickables[i] != undefined) {
+    //         clickables[i].update();
+    //     }
+    // }
+
+    for (layer of clickableRenderLayers) {
+        for (let i = 0; i < layer.objects.length; i++) {
+            if (layer.objects[i] != undefined) {
+                layer.objects[i].update();
+            }
         }
     }
 }

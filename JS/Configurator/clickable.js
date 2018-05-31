@@ -1,19 +1,18 @@
 //This is a clickable class. It's basically the base for every object in our game
 
 var clickables = [];
-var isPressingClickable = false;
+var clickableRenderLayers = [];
 
-function getClickableID(clickable) {
-    let index = -1;
-
-    for (let i = 0; i < clickables.length; i++) {
-        if (clickables[i] == clickable) {
-            index = i;
-        }
-    }
-
-    return index;
+function createRenderLayer (name, order) {
+    clickableRenderLayers.push({objects: [], order: order, name: name});
+    clickableRenderLayers.sort((a, b) => {return a.order > b.order});
 }
+
+createRenderLayer("default",0);
+createRenderLayer("furniture",1);
+createRenderLayer("test",-1);
+
+var isPressingClickable = false;
 
 class Clickable {
 
@@ -71,26 +70,35 @@ class Clickable {
         this.mouseIsPressedTrack = mouseIsPressed;
 
         this.text = '';
+
+        this.setRenderLayer("default");
+    }
+
+    setRenderLayer(name) {
+        if (this.renderLayer != undefined) {
+            let oldlayer = clickableRenderLayers.filter((x) => {return x.name == this.renderLayer})[0];
+            oldlayer.objects = oldlayer.objects.filter(e => e !== this);
+        }
+
+        let layer = clickableRenderLayers.filter((x) => {return x.name == name})[0];
+        layer.objects.push(this);
+        this.renderLayer = name;
     }
 
     render(ax, ay) {
-        if (!this.isPressed) {
-
-        } else {
+        if (this.isPressed) {
             this.hoverScaler = this.hoverScale * 0.95;
         }
 
         if (this.drawFrame) {
             strokeWeight(1);
             stroke(50);
-            //fill(234, 231, 213);
             fill(255);
             rect(ax - this.width * this.anchorX, ay - this.height * this.anchorY, this.width, this.height, 10);
         }
 
         fill(10);
-        strokeWeight(0);
-        //textFont(font_main);        
+        strokeWeight(0);     
         textAlign(CENTER, CENTER);
         textSize(this.textSize * this.hoverScaler);
         text(this.text,
@@ -220,33 +228,19 @@ class Clickable {
         }
     }
 
-    onPressed() {
-        return;
-    }
+    onPressed() {}
 
-    onUnpressed() {
-        return;
-    }
+    onUnpressed() {}
 
-    pressed() {
-        return;
-    }
+    pressed() {}
 
-    onHovered() {
-        return;
-    }
+    onHovered() {}
 
-    onStopHovered() {
-        return;
-    }
+    onStopHovered() {}
 
-    onArrived() {
+    onArrived() {}
 
-    }
-
-    tick() {
-        
-    }
+    tick() {}
 
     moveTo(x, y, speed) {
         this.isMoving   = true;
@@ -273,30 +267,26 @@ class Clickable {
     }
 
     delete() {
-        let i = getClickableID(this);
+        clickables = clickables.filter(e => e !== this);
 
-        if (i > -1) {
-            delete clickables[i];
-            clickables.splice(i, 1);
-        }
+        let oldlayer = clickableRenderLayers.filter((x) => {return x.name == this.renderLayer})[0];
+        oldlayer.objects = oldlayer.objects.filter(e => e !== this);
+
+        delete this;
     }
 
     setToFront () {
-        let i = getClickableID(this);
+        let layer = clickableRenderLayers.filter((x) => {return x.name == this.renderLayer})[0];
 
-        if (i > -1) {
-            clickables.splice(i, 1);
-            clickables.splice(clickables.length - 1,0,this);
-        }       
+        layer.objects = layer.objects.filter(e => e !== this);
+        layer.objects.push(this);    
     }
 
     setToBack () {
-        let i = getClickableID(this);
+        let layer = clickableRenderLayers.filter((x) => {return x.name == this.renderLayer})[0];
 
-        if (i > -1) {
-            clickables.splice(i, 1);
-            clickables.splice(0,0,this);
-        }       
+        layer.objects = layer.objects.filter(e => e !== this);
+        layer.objects.splice(0,0,this);    
     }
 }
 
