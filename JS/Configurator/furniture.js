@@ -47,8 +47,8 @@ class Furniture extends Clickable {
             let xGrid = Math.round((mouseX + gridSize/2)/gridSize) + this.offsetGrabX;
             let yGrid = Math.round((mouseY + gridSize/2)/gridSize) + this.offsetGrabY;
 
-            xGrid = Math.max(1, Math.min(xGrid, 10));
-            yGrid = Math.max(1, Math.min(yGrid, 7));
+            xGrid = Math.max(this.gridSizeX, Math.min(xGrid, 10));
+            yGrid = Math.max(this.gridSizeY, Math.min(yGrid, 7));
 
             this.targetGridX = xGrid
             this.targetGridY = yGrid
