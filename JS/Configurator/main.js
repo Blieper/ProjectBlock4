@@ -29,6 +29,7 @@ function setup() {
         newFurniture.setGridDimension(currentFurnitureType.sizeX, currentFurnitureType.sizeY);
         newFurniture.text = currentFurnitureType.name;
         newFurniture.setRenderLayer("furniture");
+        newFurniture.image = currentFurnitureType.image;
 
         this.pressed = function () {
             newFurniture.pressed();
@@ -63,6 +64,10 @@ function setup() {
     GarbageCan = new Clickable(100,-100,100,100,anchorTypes.BOTTOMLEFT);
     GarbageCan.text = "Garbage";
     GarbageCan.isClickable = false;
+
+    for (f of FurnitureTypes) {
+        f.image = loadImage(f.imagePath);
+    }
 }
 
 function draw() {
@@ -78,6 +83,8 @@ function draw() {
     // }
 
     for (layer of clickableRenderLayers) {
+        //console.log(layer);
+
         for (let i = 0; i < layer.objects.length; i++) {
             if (layer.objects[i] != undefined) {
                 layer.objects[i].update();

@@ -9,8 +9,13 @@ function createRenderLayer (name, order) {
 }
 
 createRenderLayer("default",0);
-createRenderLayer("furniture",1);
-createRenderLayer("test",-1);
+createRenderLayer("furniture1",1);
+createRenderLayer("furniture2",2);
+createRenderLayer("furniture3",3);
+createRenderLayer("furniture4",4);
+createRenderLayer("furniture5",5);
+createRenderLayer("furniture6",6);
+createRenderLayer("furniture7",7);
 
 var isPressingClickable = false;
 
@@ -70,6 +75,7 @@ class Clickable {
         this.mouseIsPressedTrack = mouseIsPressed;
 
         this.text = '';
+        this.image = null;
 
         this.setRenderLayer("default");
 
@@ -84,6 +90,10 @@ class Clickable {
     }
 
     setRenderLayer(name) {
+        if (clickableRenderLayers.filter((x) => {return x.name == name})[0] == undefined) {
+            return
+        }
+
         if (this.renderLayer != undefined) {
             let oldlayer = clickableRenderLayers.filter((x) => {return x.name == this.renderLayer})[0];
             oldlayer.objects = oldlayer.objects.filter(e => e !== this);
@@ -98,6 +108,11 @@ class Clickable {
         if (this.isPressed) {
             this.hoverScaler = this.hoverScale * 0.95;
         }
+
+        if (this.image) {
+            image(this.image, ax - this.width * this.anchorX, ay - this.height * this.anchorY + this.height- this.image.height);
+            return
+        } 
 
         if (this.drawFrame) {
             strokeWeight(1);

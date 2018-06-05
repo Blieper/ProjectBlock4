@@ -25,6 +25,8 @@ class Furniture extends Clickable {
         this.offsetGrabX = 0;
         this.offsetGrabY = 0;   
 
+        this.hoverScale = 1;
+
         this.onPressed = function () {
             let deltaX = ((this.realX + this.standardWidth/2) - mouseX);
             deltaX = Math.floor(deltaX/gridSize);
@@ -37,9 +39,6 @@ class Furniture extends Clickable {
         }
 
         this.pressed = function () {
-            this.hoverScale = 1;
-            this.hoverScaler = 1;
-
             let xGrid = Math.round((mouseX + gridSize/2)/gridSize) + this.offsetGrabX;
             let yGrid = Math.round((mouseY + gridSize/2)/gridSize) + this.offsetGrabY;
 
@@ -74,6 +73,8 @@ class Furniture extends Clickable {
         }
 
         this.moveToGrid = function (xGrid,yGrid) {
+            this.setRenderLayer("furniture" + this.targetGridY);
+
             this.moveTo(
                 xGrid * gridSize - gridSize/2,
                 yGrid * gridSize - gridSize/2,
@@ -81,7 +82,7 @@ class Furniture extends Clickable {
         }
 
         this.onUnpressed = function () {
-            this.hoverScale = 1.05;
+            //this.hoverScale = 1.05;
 
             if (this.targetY > 750) {
                 this.throwInGarbage();
@@ -100,21 +101,29 @@ class Furniture extends Clickable {
 
             let success = true;
 
+            console.log("----Check----");
+
             for (let f of furniture) {
                 if (f === this) {continue;}
-        
+
+                console.log("Object");
+
                 for (let x1 = 0; x1 < this.gridSizeX; x1++) {
                     for (let y1 = 0; y1 < this.gridSizeY; y1++) {
                     
                         let testX = this.targetGridX - x1;
                         let testY = this.targetGridY - y1;
 
+                        console.log("Own: ",testX,testY);
+
                         for (let x2 = 0; x2 < f.gridSizeX; x2++) {
                             for (let y2 = 0; y2 < f.gridSizeY; y2++) {
                             
-                                let testX2 = f.targetGridX - x2;
-                                let testY2 = f.targetGridY - y2;
-        
+                                let testX2 = f.currentGridX - x2;
+                                let testY2 = f.currentGridY - y2;
+
+                                console.log("Other: ",testX2,testY2);
+
                                 if (testX == testX2 && testY == testY2) {
                                     success = false;
                                 } 
@@ -163,6 +172,6 @@ class Furniture extends Clickable {
     }
 
     onHovered () {
-        this.setToFront();
+        //this.setToFront();
     }
 }
