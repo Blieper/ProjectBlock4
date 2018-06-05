@@ -56,19 +56,19 @@ let fridgetype1 = new FurnitureType();
 fridgetype1.imagePath = "Images/furniture/fridge/fridge (1).png";
 fridgetype1.name = "fridge1";
 fridgetype1.sizeX = 2;
-fridgetype1.sizeY = 4;
+fridgetype1.sizeY = 2;
 
 let fridgetype2 = new FurnitureType();
 fridgetype2.imagePath = "Images/furniture/fridge/fridge (2).png";
 fridgetype2.name = "fridge2";
 fridgetype2.sizeX = 2;
-fridgetype2.sizeY = 4;
+fridgetype2.sizeY = 2;
 
 let fridgetype3 = new FurnitureType();
 fridgetype3.imagePath = "Images/furniture/fridge/fridge (3).png";
 fridgetype3.name = "fridge3";
 fridgetype3.sizeX = 2;
-fridgetype3.sizeY = 4;
+fridgetype3.sizeY = 2;
 
 let minifridgetype1 = new FurnitureType();
 minifridgetype1.imagePath = "Images/furniture/mini fridge/mini fridge (1).png";
