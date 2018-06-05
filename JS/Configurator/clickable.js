@@ -3,19 +3,19 @@
 var clickables = [];
 var clickableRenderLayers = [];
 
-function createRenderLayer (name, order) {
-    clickableRenderLayers.push({objects: [], order: order, name: name});
-    clickableRenderLayers.sort((a, b) => {return a.order > b.order});
+function createRenderLayer(name, order) {
+    clickableRenderLayers.push({ objects: [], order: order, name: name });
+    clickableRenderLayers.sort((a, b) => { return a.order > b.order });
 }
 
-createRenderLayer("default",0);
-createRenderLayer("furniture1",1);
-createRenderLayer("furniture2",2);
-createRenderLayer("furniture3",3);
-createRenderLayer("furniture4",4);
-createRenderLayer("furniture5",5);
-createRenderLayer("furniture6",6);
-createRenderLayer("furniture7",7);
+createRenderLayer("default", 0);
+createRenderLayer("furniture1", 1);
+createRenderLayer("furniture2", 2);
+createRenderLayer("furniture3", 3);
+createRenderLayer("furniture4", 4);
+createRenderLayer("furniture5", 5);
+createRenderLayer("furniture6", 6);
+createRenderLayer("furniture7", 7);
 
 var isPressingClickable = false;
 
@@ -24,82 +24,83 @@ class Clickable {
     constructor(x = 0, y = 0, width = 50, height = 25, anchor = anchorTypes.TOPLEFT) {
         clickables.push(this);
 
-        this.width  = width;
+        this.width = width;
         this.height = height;
-        this.x      = x;
-        this.y      = y;
+        this.x = x;
+        this.y = y;
 
-        this.realX  = x;
-        this.realY  = y;
+        this.realX = x;
+        this.realY = y;
 
-        this.anchor     = anchor;
-        this.anchorX    = 0.5;
-        this.anchorY    = 0.5;
+        this.anchor = anchor;
+        this.anchorX = 0.5;
+        this.anchorY = 0.5;
 
-        this.drawFrame  = true;
-        this.textSize   = 18;
+        this.drawFrame = true;
+        this.textSize = 18;
 
         this.paused = false;
 
         // Can you even click the button?
-        this.isClickable            = true;
+        this.isClickable = true;
         // true -> only trigger onPressed if it was unpressed while the cursor was on the button. false -> will always unpress regardless of the cursor's position
-        this.onlyUnpressOverButton  = false;
+        this.onlyUnpressOverButton = false;
         // only render and update if its active
-        this.isActive               = true;
+        this.isActive = true;
 
-        this.hoverScale     = 1.05;
-        this.hoverScaler    = 1;
+        this.hoverScale = 1.05;
+        this.hoverScaler = 1;
 
-        this.standardWidth  = this.width;
+        this.standardWidth = this.width;
         this.standardHeight = this.height;
 
-        this.speed   = 0;
+        this.speed = 0;
         this.targetX = 0;
         this.targetY = 0;
 
-        this.textPaddingUp      = 0;
-        this.textPaddingDown    = 0;
-        this.textPaddingLeft    = 0;
-        this.textPaddingRight   = 0;
+        this.textPaddingUp = 0;
+        this.textPaddingDown = 0;
+        this.textPaddingLeft = 0;
+        this.textPaddingRight = 0;
 
-        this.isPressed      = false;
-        this.onPressDown    = false;
-        this.onPressUp      = false;
-        this.mouseIsOver    = false;
-        this.isMoving       = false;
-        this.overPressed    = false;
-        this.offPressed     = false;
-        this.wasHovering    = false;
+        this.isPressed = false;
+        this.onPressDown = false;
+        this.onPressUp = false;
+        this.mouseIsOver = false;
+        this.isMoving = false;
+        this.overPressed = false;
+        this.offPressed = false;
+        this.wasHovering = false;
 
         this.mouseIsPressedTrack = mouseIsPressed;
 
         this.text = '';
         this.image = null;
+        this.constrainImage = false;
 
         this.setRenderLayer("default");
 
         this.delete = () => {
             clickables = clickables.filter(e => e !== this);
-    
-            let oldlayer = clickableRenderLayers.filter((x) => {return x.name == this.renderLayer})[0];
+
+            let oldlayer = clickableRenderLayers.filter((x) => { return x.name == this.renderLayer })[0];
             oldlayer.objects = oldlayer.objects.filter(e => e !== this);
-    
+
             delete this;
         }
     }
 
     setRenderLayer(name) {
-        if (clickableRenderLayers.filter((x) => {return x.name == name})[0] == undefined) {
+        if (clickableRenderLayers.filter((x) => { return x.name == name })[0] == undefined) {
             return
         }
 
         if (this.renderLayer != undefined) {
-            let oldlayer = clickableRenderLayers.filter((x) => {return x.name == this.renderLayer})[0];
+            let oldlayer = clickableRenderLayers.filter((x) => { return x.name == this.renderLayer })[0];
             oldlayer.objects = oldlayer.objects.filter(e => e !== this);
         }
 
-        let layer = clickableRenderLayers.filter((x) => {return x.name == name})[0];
+        let layer = clickableRenderLayers.filter((x) => { return x.name == name })[0];
         layer.objects.push(this);
         this.renderLayer = name;
     }
@@ -109,11 +110,6 @@ class Clickable {
             this.hoverScaler = this.hoverScale * 0.95;
         }
 
-        if (this.image) {
-            image(this.image, ax - this.width * this.anchorX, ay - this.height * this.anchorY + this.height- this.image.height);
-            return
-        } 
-
         if (this.drawFrame) {
             strokeWeight(1);
             stroke(50);
@@ -122,18 +118,38 @@ class Clickable {
         }
 
         fill(10);
-        strokeWeight(0);     
+        strokeWeight(0);
         textAlign(CENTER, CENTER);
         textSize(this.textSize * this.hoverScaler);
         text(this.text,
-            ax + this.textPaddingLeft - this.width  * this.anchorX,
-            ay + this.textPaddingUp   - this.height * this.anchorY,
-            this.width  - this.textPaddingLeft - this.textPaddingRight,
-            this.height - this.textPaddingUp   - this.textPaddingDown);
+            ax + this.textPaddingLeft - this.width * this.anchorX,
+            ay + this.textPaddingUp - this.height * this.anchorY,
+            this.width - this.textPaddingLeft - this.textPaddingRight,
+            this.height - this.textPaddingUp - this.textPaddingDown);
+
+
+        if (this.image) {
+            if (this.constrainImage === true) {
+                let isWider = this.image.width > this.image.height;
+                let ratio = isWider ? this.width / this.image.width : this.height / this.image.height;
+
+                imageMode(CENTER);
+                image(
+                    this.image,
+                    ax,
+                    ay,
+                    this.image.width * ratio * 0.9,
+                    this.image.height * ratio * 0.9,
+                );
+            } else {
+                imageMode(CORNER);
+                image(this.image, ax - this.width * this.anchorX, ay - this.height * this.anchorY + this.height - this.image.height);
+            }
+        }
     }
 
     update() {
-        if (this.isActive) {    
+        if (this.isActive) {
             switch (this.anchor) {
                 case anchorTypes.TOPLEFT:
                     this.realX = this.x;
@@ -141,43 +157,43 @@ class Clickable {
                     break;
                 case anchorTypes.LEFT:
                     this.realX = this.x;
-                    this.realY = this.y + height/2;
-                    break;    
+                    this.realY = this.y + height / 2;
+                    break;
                 case anchorTypes.BOTTOMLEFT:
                     this.realX = this.x;
                     this.realY = this.y + height;
-                    break;      
+                    break;
                 case anchorTypes.TOP:
-                    this.realX = this.x + width/2;
+                    this.realX = this.x + width / 2;
                     this.realY = this.y;
                     break;
                 case anchorTypes.CENTER:
-                    this.realX = this.x + width/2;
-                    this.realY = this.y + height/2;
-                    break;    
+                    this.realX = this.x + width / 2;
+                    this.realY = this.y + height / 2;
+                    break;
                 case anchorTypes.BOTTOM:
-                    this.realX = this.x + width/2;
+                    this.realX = this.x + width / 2;
                     this.realY = this.y + height;
-                    break;      
+                    break;
                 case anchorTypes.TOPRIGHT:
                     this.realX = this.x + width;
                     this.realY = this.y;
                     break;
                 case anchorTypes.RIGHT:
                     this.realX = this.x + width;
-                    this.realY = this.y + height/2;
-                    break;    
+                    this.realY = this.y + height / 2;
+                    break;
                 case anchorTypes.BOTTOMRIGHT:
                     this.realX = this.x + width;
                     this.realY = this.y + height;
-                    break;    
+                    break;
             }
-            
+
             if (this.isClickable && !this.paused) {
                 this.onPressDown = false;
                 this.onPressUp = false;
 
-                if ((mouseX >= (this.realX - this.width * this.anchorX)) && (mouseX <= (this.realX + this.width * (1-this.anchorX))) && (mouseY >= (this.realY - this.height * this.anchorY)) && (mouseY <= (this.realY + this.height * (1-this.anchorY)))) {
+                if ((mouseX >= (this.realX - this.width * this.anchorX)) && (mouseX <= (this.realX + this.width * (1 - this.anchorX))) && (mouseY >= (this.realY - this.height * this.anchorY)) && (mouseY <= (this.realY + this.height * (1 - this.anchorY)))) {
                     this.mouseIsOver = true;
                     cursor(HAND);
                 } else {
@@ -232,7 +248,7 @@ class Clickable {
                 if (this.wasHovering != this.mouseIsOver) {
                     if (this.mouseIsOver && !isPressingClickable) {
                         this.onHovered();
-                    }else{
+                    } else {
                         this.onStopHovered();
                     }
 
@@ -247,30 +263,30 @@ class Clickable {
                 this.move(this.targetX, this.targetY, this.speed);
             }
 
-            this.render(this.realX,this.realY);
+            this.render(this.realX, this.realY);
             this.tick();
         }
     }
 
-    onPressed() {}
+    onPressed() { }
 
-    onUnpressed() {}
+    onUnpressed() { }
 
-    pressed() {}
+    pressed() { }
 
-    onHovered() {}
+    onHovered() { }
 
-    onStopHovered() {}
+    onStopHovered() { }
 
-    onArrived() {}
+    onArrived() { }
 
-    tick() {}
+    tick() { }
 
     moveTo(x, y, speed) {
-        this.isMoving   = true;
-        this.speed      = speed;
-        this.targetX    = x;
-        this.targetY    = y;
+        this.isMoving = true;
+        this.speed = speed;
+        this.targetX = x;
+        this.targetY = y;
     }
 
     move(x, y, speed) {
@@ -290,18 +306,18 @@ class Clickable {
         }
     }
 
-    setToFront () {
-        let layer = clickableRenderLayers.filter((x) => {return x.name == this.renderLayer})[0];
+    setToFront() {
+        let layer = clickableRenderLayers.filter((x) => { return x.name == this.renderLayer })[0];
 
         layer.objects = layer.objects.filter(e => e !== this);
-        layer.objects.push(this);    
+        layer.objects.push(this);
     }
 
-    setToBack () {
-        let layer = clickableRenderLayers.filter((x) => {return x.name == this.renderLayer})[0];
+    setToBack() {
+        let layer = clickableRenderLayers.filter((x) => { return x.name == this.renderLayer })[0];
 
         layer.objects = layer.objects.filter(e => e !== this);
-        layer.objects.splice(0,0,this);    
+        layer.objects.splice(0, 0, this);
     }
 }
 

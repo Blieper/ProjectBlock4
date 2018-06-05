@@ -101,12 +101,8 @@ class Furniture extends Clickable {
 
             let success = true;
 
-            console.log("----Check----");
-
             for (let f of furniture) {
                 if (f === this) {continue;}
-
-                console.log("Object");
 
                 for (let x1 = 0; x1 < this.gridSizeX; x1++) {
                     for (let y1 = 0; y1 < this.gridSizeY; y1++) {
@@ -114,15 +110,11 @@ class Furniture extends Clickable {
                         let testX = this.targetGridX - x1;
                         let testY = this.targetGridY - y1;
 
-                        console.log("Own: ",testX,testY);
-
                         for (let x2 = 0; x2 < f.gridSizeX; x2++) {
                             for (let y2 = 0; y2 < f.gridSizeY; y2++) {
                             
                                 let testX2 = f.currentGridX - x2;
                                 let testY2 = f.currentGridY - y2;
-
-                                console.log("Other: ",testX2,testY2);
 
                                 if (testX == testX2 && testY == testY2) {
                                     success = false;

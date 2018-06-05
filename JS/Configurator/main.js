@@ -23,13 +23,14 @@ function setup() {
     background(200);
 
     NewFurnitureClickable = new Clickable(0,-100,100,100,anchorTypes.BOTTOM);
-    NewFurnitureClickable.text = currentFurnitureType.name;
+    NewFurnitureClickable.image = currentFurnitureType.image;
+    NewFurnitureClickable.constrainImage = true;
     NewFurnitureClickable.onPressed = function () {
         let newFurniture = new Furniture(this.realX,this.realY,100,100);
         newFurniture.setGridDimension(currentFurnitureType.sizeX, currentFurnitureType.sizeY);
-        newFurniture.text = currentFurnitureType.name;
         newFurniture.setRenderLayer("furniture");
         newFurniture.image = currentFurnitureType.image;
+        newFurniture.drawFrame = false;
 
         this.pressed = function () {
             newFurniture.pressed();
@@ -48,7 +49,7 @@ function setup() {
         if (currentFurnitureTypeID > FurnitureTypes.length - 1) {currentFurnitureTypeID = 0}
 
         currentFurnitureType = FurnitureTypes[currentFurnitureTypeID];
-        NewFurnitureClickable.text = currentFurnitureType.name;
+        NewFurnitureClickable.image = currentFurnitureType.image;
     }
 
     PrevFurnitureClickable = new Clickable(-100,-100,75,75,anchorTypes.BOTTOM);
@@ -58,7 +59,7 @@ function setup() {
         if (currentFurnitureTypeID < 0) {currentFurnitureTypeID = FurnitureTypes.length - 1}
 
         currentFurnitureType = FurnitureTypes[currentFurnitureTypeID];
-        NewFurnitureClickable.text = currentFurnitureType.name;
+        NewFurnitureClickable.image = currentFurnitureType.image;
     }
 
     GarbageCan = new Clickable(100,-100,100,100,anchorTypes.BOTTOMLEFT);
