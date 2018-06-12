@@ -12,72 +12,100 @@ class FurnitureType {
     }
 }
 
-let bedtype1 = new FurnitureType();
-bedtype1.name = "bed1";
-bedtype1.imagePath = "Images/furniture/bed/bed (1).png";
-bedtype1.sizeX = 4;
-bedtype1.sizeY = 2;
+let x;
 
-let bedtype2 = new FurnitureType();
-bedtype2.name = "bed2";
-bedtype2.imagePath = "Images/furniture/bed/bed (2).png";
-bedtype2.sizeX = 2;
-bedtype2.sizeY = 3;
+x = new FurnitureType();
+x.name = "bed1";
+x.imagePath = "Images/furniture/bed/bed (1).png";
+x.sizeX = 2;
+x.sizeY = 1;
 
-let bedtype3 = new FurnitureType();
-bedtype3.name = "bed3";
-bedtype3.imagePath = "Images/furniture/bed/bed (3).png";
-bedtype3.sizeX = 2;
-bedtype3.sizeY = 3;
+x = new FurnitureType();
+x.name = "bed2";
+x.imagePath = "Images/furniture/bed/bed (2).png";
+x.sizeX = 2;
+x.sizeY = 1;
 
-let chairtype1 = new FurnitureType();
-chairtype1.name = "chair1";
-chairtype1.imagePath = "Images/furniture/chair/chair (1).png";
+x = new FurnitureType();
+x.name = "bed3";
+x.imagePath = "Images/furniture/bed/bed (3).png";
+x.sizeX = 1;
+x.sizeY = 2;
 
-let chairtype2 = new FurnitureType();
-chairtype2.name = "chair2";
-chairtype2.imagePath = "Images/furniture/chair/chair (2).png";
+x = new FurnitureType();
+x.name = "bed4";
+x.imagePath = "Images/furniture/bed/bed (4).png";
+x.sizeX = 1;
+x.sizeY = 2;
 
-let chairtype3 = new FurnitureType();
-chairtype3.name = "chair3";
-chairtype3.imagePath = "Images/furniture/chair/chair (3).png";
+x = new FurnitureType();
+x.name = "chair1";
+x.imagePath = "Images/furniture/chair/chair (1).png";
 
-let tabletype1 = new FurnitureType();
-tabletype1.name = "table1";
-tabletype1.imagePath = "Images/furniture/table/table (1).png";
-tabletype1.sizeY = 2;
+x = new FurnitureType();
+x.name = "chair2";
+x.imagePath = "Images/furniture/chair/chair (2).png";
 
-let tabletype2 = new FurnitureType();
-tabletype2.name = "table2";
-tabletype2.imagePath = "Images/furniture/table/table (2).png";
-tabletype2.sizeX = 2;
+x = new FurnitureType();
+x.name = "chair3";
+x.imagePath = "Images/furniture/chair/chair (3).png";
 
-let fridgetype1 = new FurnitureType();
-fridgetype1.imagePath = "Images/furniture/fridge/fridge (1).png";
-fridgetype1.name = "fridge1";
-fridgetype1.sizeX = 2;
-fridgetype1.sizeY = 2;
+x = new FurnitureType();
+x.name = "chair4";
+x.imagePath = "Images/furniture/chair/chair (4).png";
 
-let fridgetype2 = new FurnitureType();
-fridgetype2.imagePath = "Images/furniture/fridge/fridge (2).png";
-fridgetype2.name = "fridge2";
-fridgetype2.sizeX = 2;
-fridgetype2.sizeY = 2;
+x = new FurnitureType();
+x.name = "cornershelf1";
+x.imagePath = "Images/furniture/corner shelf/shelf (1).png";
 
-let fridgetype3 = new FurnitureType();
-fridgetype3.imagePath = "Images/furniture/fridge/fridge (3).png";
-fridgetype3.name = "fridge3";
-fridgetype3.sizeX = 2;
-fridgetype3.sizeY = 2;
+x = new FurnitureType();
+x.name = "cornershelf2";
+x.imagePath = "Images/furniture/corner shelf/shelf (2).png";
 
-let minifridgetype1 = new FurnitureType();
-minifridgetype1.imagePath = "Images/furniture/mini fridge/mini fridge (1).png";
-minifridgetype1.name = "minifridge1";
+x = new FurnitureType();
+x.name = "cornershelf3";
+x.imagePath = "Images/furniture/corner shelf/shelf (3).png";
 
-let minifridgetype2 = new FurnitureType();
-minifridgetype2.imagePath = "Images/furniture/mini fridge/mini fridge (2).png";
-minifridgetype2.name = "minifridge2";
+x = new FurnitureType();
+x.name = "cornershelf4";
+x.imagePath = "Images/furniture/corner shelf/shelf (4).png";
 
-let minifridgetype3 = new FurnitureType();
-minifridgetype3.imagePath = "Images/furniture/mini fridge/mini fridge (3).png";
-minifridgetype3.name = "minifridge3";
+x = new FurnitureType();
+x.name = "fridge1";
+x.imagePath = "Images/furniture/fridge/fridge (1).png";
+x.sizeX = 2;
+x.sizeY = 2;
+
+x = new FurnitureType();
+x.name = "fridge2";
+x.imagePath = "Images/furniture/fridge/fridge (2).png";
+x.sizeX = 2;
+x.sizeY = 2;
+
+x = new FurnitureType();
+x.name = "fridge3";
+x.imagePath = "Images/furniture/fridge/fridge (3).png";
+x.sizeX = 2;
+x.sizeY = 2;
+
+x = new FurnitureType();
+x.name = "fridge4";
+x.imagePath = "Images/furniture/fridge/fridge (4).png";
+x.sizeX = 2;
+x.sizeY = 2;
+
+x = new FurnitureType();
+x.name = "toilet1";
+x.imagePath = "Images/furniture/toilet/toilet (1).png";
+
+x = new FurnitureType();
+x.name = "toilet2";
+x.imagePath = "Images/furniture/toilet/toilet (2).png";
+
+x = new FurnitureType();
+x.name = "toilet3";
+x.imagePath = "Images/furniture/toilet/toilet (3).png";
+
+x = new FurnitureType();
+x.name = "toilet4";
+x.imagePath = "Images/furniture/toilet/toilet (4).png";

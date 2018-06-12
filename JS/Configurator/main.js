@@ -20,7 +20,6 @@ let currentFurnitureType = FurnitureTypes[currentFurnitureTypeID];
 
 function setup() {
     createCanvas(1000, 900);
-    background(200);
 
     NewFurnitureClickable = new Clickable(0,-100,100,100,anchorTypes.BOTTOM);
     NewFurnitureClickable.image = currentFurnitureType.image;
@@ -43,7 +42,9 @@ function setup() {
     }
 
     NextFurnitureClickable = new Clickable(100,-100,75,75,anchorTypes.BOTTOM);
-    NextFurnitureClickable.text = ">";
+    NextFurnitureClickable.image = loadImage("Images/buttons/next.png");
+    //NextFurnitureClickable.drawFrame = false;
+    NextFurnitureClickable.constrainImage = true;
     NextFurnitureClickable.onUnpressed = function () {
         currentFurnitureTypeID++;
         if (currentFurnitureTypeID > FurnitureTypes.length - 1) {currentFurnitureTypeID = 0}
@@ -53,7 +54,9 @@ function setup() {
     }
 
     PrevFurnitureClickable = new Clickable(-100,-100,75,75,anchorTypes.BOTTOM);
-    PrevFurnitureClickable.text = "<";
+    PrevFurnitureClickable.image = loadImage("Images/buttons/back.png");
+    //PrevFurnitureClickable.drawFrame = false;
+    PrevFurnitureClickable.constrainImage = true;
     PrevFurnitureClickable.onUnpressed = function () {
         currentFurnitureTypeID--;
         if (currentFurnitureTypeID < 0) {currentFurnitureTypeID = FurnitureTypes.length - 1}
@@ -63,18 +66,23 @@ function setup() {
     }
 
     GarbageCan = new Clickable(100,-100,100,100,anchorTypes.BOTTOMLEFT);
-    GarbageCan.text = "Garbage";
     GarbageCan.isClickable = false;
+    //GarbageCan.drawFrame = false;
+    GarbageCan.image = loadImage("Images/buttons/garbage1.png");
 
     for (f of FurnitureTypes) {
         f.image = loadImage(f.imagePath);
     }
+
+    BackgroundObject = new Clickable(0,350,1000,700,anchorTypes.TOP);
+    BackgroundObject.image = loadImage("Images/designer/designer7.png");
+    BackgroundObject.isClickable = false;
 }
 
 function draw() {
     clear();
     cursor(ARROW);
-    background(200);
+    background(255);
 
     // Update all clickables
     // for (let i = 0; i < clickables.length; i++) {

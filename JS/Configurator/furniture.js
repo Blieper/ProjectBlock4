@@ -42,8 +42,8 @@ class Furniture extends Clickable {
             let xGrid = Math.round((mouseX + gridSize/2)/gridSize) + this.offsetGrabX;
             let yGrid = Math.round((mouseY + gridSize/2)/gridSize) + this.offsetGrabY;
 
-            xGrid = Math.max(this.gridSizeX, Math.min(xGrid, 10));
-            yGrid = Math.max(this.gridSizeY, Math.min(yGrid, 7));
+            xGrid = Math.max(this.gridSizeX + 1, Math.min(xGrid, 9));
+            yGrid = Math.max(this.gridSizeY + 1, Math.min(yGrid, 6));
 
             this.targetGridX = xGrid;
             this.targetGridY = yGrid;
@@ -54,7 +54,7 @@ class Furniture extends Clickable {
             this.desiredGridX = moveGridX;
             this.desiredGridY = moveGridY;
 
-            if (mouseY < 700) {
+            if (mouseY < 600) {
                 this.moveToGrid(this.desiredGridX,this.desiredGridY);  
             } else {
                 this.moveTo(mouseX,mouseY, 0.25);  
@@ -84,12 +84,12 @@ class Furniture extends Clickable {
         this.onUnpressed = function () {
             //this.hoverScale = 1.05;
 
-            if (this.targetY > 750) {
+            if (this.targetY > 650) {
                 this.throwInGarbage();
                 return;
             } 
 
-            if (this.targetY > 700) {
+            if (this.targetY > 600) {
                 if (this.justCreated == true) {
                     this.throwInGarbage();
                 } else {
@@ -153,8 +153,17 @@ class Furniture extends Clickable {
 
             oldDelete();
         }
-    }
 
+            
+        this.render = function (ax, ay) {
+            if (this.isPressed) {
+                this.hoverScaler = this.hoverScale * 0.95;
+            }
+            
+            imageMode(CORNER);
+            image(this.image, ax - this.gridSizeX * gridSize * this.anchorX, ay - this.gridSizeY * gridSize * this.anchorY,this.gridSizeX * gridSize,this.gridSizeY * gridSize);
+        }
+    }
 
     throwInGarbage () {
         this.moveTo(GarbageCan.realX,GarbageCan.realY,0.15);
