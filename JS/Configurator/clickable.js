@@ -8,7 +8,7 @@ function createRenderLayer(name, order) {
     clickableRenderLayers.sort((a, b) => { return a.order > b.order });
 }
 
-createRenderLayer("default", 8);
+createRenderLayer("default", 0);
 createRenderLayer("furniture1", 1);
 createRenderLayer("furniture2", 2);
 createRenderLayer("furniture3", 3);
