@@ -19,7 +19,11 @@ let currentFurnitureTypeID = 0;
 let currentFurnitureType = FurnitureTypes[currentFurnitureTypeID];
 
 function setup() {
-    createCanvas(1000, 900);
+    var canvas = createCanvas(1000, 900);
+    // Move the canvas so it’s inside our <div id="sketch-holder">.
+    canvas.parent('sketch-holder');
+
+    background(200);
 
     NewFurnitureClickable = new Clickable(0,-100,100,100,anchorTypes.BOTTOM);
     NewFurnitureClickable.image = currentFurnitureType.image;
