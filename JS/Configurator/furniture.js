@@ -19,6 +19,8 @@ class Furniture extends Clickable {
         this.desiredGridY = 0;
         this.lastDesiredGridX = 0;
         this.lastDesiredGridY = 0;       
+        this.lastFreeGridX = null;
+        this.lastFreeGridY = null;           
 
         this.inGarbage = false;
 
@@ -54,6 +56,11 @@ class Furniture extends Clickable {
             this.desiredGridX = moveGridX;
             this.desiredGridY = moveGridY;
 
+            if (!this.isColliding(moveGridX,moveGridY)) {
+                this.lastFreeGridX = moveGridX;
+                this.lastFreeGridY = moveGridY;     
+            }
+
             if (mouseY < 600) {
                 this.moveToGrid(this.desiredGridX,this.desiredGridY);  
             } else {
@@ -81,6 +88,36 @@ class Furniture extends Clickable {
                 0.5)
         }
 
+        this.isColliding = function (x = this.targetGridX,y = this.targetGridY) {
+            let success = true;
+
+            for (let f of furniture) {
+                if (f === this) {continue;}
+
+                for (let x1 = 0; x1 < this.gridSizeX; x1++) {
+                    for (let y1 = 0; y1 < this.gridSizeY; y1++) {
+                    
+                        let testX = x - x1;//this.targetGridX - x1;
+                        let testY = y - y1;//this.targetGridY - y1;
+
+                        for (let x2 = 0; x2 < f.gridSizeX; x2++) {
+                            for (let y2 = 0; y2 < f.gridSizeY; y2++) {
+                            
+                                let testX2 = f.currentGridX - x2;
+                                let testY2 = f.currentGridY - y2;
+
+                                if (testX == testX2 && testY == testY2) {
+                                    success = false;
+                                } 
+                            }
+                        }
+                    }
+                }
+            }
+
+            return !success;
+        }
+
         this.onUnpressed = function () {
             //this.hoverScale = 1.05;
 
@@ -99,33 +136,11 @@ class Furniture extends Clickable {
                 return;
             } 
 
-            let success = true;
-
-            for (let f of furniture) {
-                if (f === this) {continue;}
-
-                for (let x1 = 0; x1 < this.gridSizeX; x1++) {
-                    for (let y1 = 0; y1 < this.gridSizeY; y1++) {
-                    
-                        let testX = this.targetGridX - x1;
-                        let testY = this.targetGridY - y1;
-
-                        for (let x2 = 0; x2 < f.gridSizeX; x2++) {
-                            for (let y2 = 0; y2 < f.gridSizeY; y2++) {
-                            
-                                let testX2 = f.currentGridX - x2;
-                                let testY2 = f.currentGridY - y2;
-
-                                if (testX == testX2 && testY == testY2) {
-                                    success = false;
-                                } 
-                            }
-                        }
-                    }
-                }
-            }
+            let success = !this.isColliding();
 
             if (success) {
+                console.log("Success");
+
                 this.currentGridX = this.targetGridX;
                 this.currentGridY = this.targetGridY;
 
@@ -139,10 +154,25 @@ class Furniture extends Clickable {
                     this.moveToGrid(this.lastDesiredGridX,this.lastDesiredGridY);
                 }    
             } else {
-                if (this.justCreated == true) {
+                // if (this.justCreated == true) {
+                //     this.throwInGarbage();
+                // } else {
+                //     this.moveToGrid(this.lastDesiredGridX,this.lastDesiredGridY);
+                // }
+
+                if (this.lastFreeGridX != null && this.lastFreeGridY != null) {
+
+                    this.currentGridX = this.lastFreeGridX;
+                    this.currentGridY = this.lastFreeGridY;
+
+                    this.moveToGrid(this.lastFreeGridX,this.lastFreeGridY);
+
+                    if (this.justCreated == true) {
+                        this.justCreated = false;
+                        furniture.push(this);
+                    }
+                } else { 
                     this.throwInGarbage();
-                } else {
-                    this.moveToGrid(this.lastDesiredGridX,this.lastDesiredGridY);
                 }
             }
         }

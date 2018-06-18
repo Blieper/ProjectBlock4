@@ -100,6 +100,7 @@ function setup() {
     BackgroundObject = new Clickable(0,350,1000,700,anchorTypes.TOP);
     BackgroundObject.image = loadImage("Images/designer/designer9.png");
     BackgroundObject.isClickable = false;
+    BackgroundObject.drawFrame = false;
 
     NextFurnitureClickable.onUnpressed();
 }
