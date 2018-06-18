@@ -170,3 +170,110 @@ x.imagePath = "Images/furniture/table/table (2).png";
 x.sizeX = 2;
 x.sizeY = 1;
 y.types.push(x);
+
+// Couch category
+y = new FurnitureCategory();
+y.name = "couch";
+
+x = new FurnitureType();
+x.name = "couch1";
+x.imagePath = "Images/furniture/couch/couch (2).png";
+x.sizeX = 2;
+x.sizeY = 1;
+y.types.push(x);
+
+x = new FurnitureType();
+x.name = "couch2";
+x.imagePath = "Images/furniture/couch/couch (3).png";
+x.sizeX = 1;
+x.sizeY = 2;
+y.types.push(x);
+
+x = new FurnitureType();
+x.name = "couch3";
+x.imagePath = "Images/furniture/couch/couch (4).png";
+x.sizeX = 2;
+x.sizeY = 1;
+y.types.push(x);
+
+x = new FurnitureType();
+x.name = "couch4";
+x.imagePath = "Images/furniture/couch/couch (1).png";
+x.sizeX = 1;
+x.sizeY = 2;
+y.types.push(x);
+
+// Shower category
+y = new FurnitureCategory();
+y.name = "shower";
+
+x = new FurnitureType();
+x.name = "shower1";
+x.imagePath = "Images/furniture/shower/shower (2).png";
+x.sizeX = 1;
+x.sizeY = 2;
+y.types.push(x);
+
+x = new FurnitureType();
+x.name = "shower2";
+x.imagePath = "Images/furniture/shower/shower (3).png";
+x.sizeX = 2;
+x.sizeY = 1;
+y.types.push(x);
+
+x = new FurnitureType();
+x.name = "shower3";
+x.imagePath = "Images/furniture/shower/shower (4).png";
+x.sizeX = 1;
+x.sizeY = 2;
+y.types.push(x);
+
+x = new FurnitureType();
+x.name = "shower4";
+x.imagePath = "Images/furniture/shower/shower (1).png";
+x.sizeX = 2;
+x.sizeY = 1;
+y.types.push(x);
+
+// Sink category
+y = new FurnitureCategory();
+y.name = "sink";
+
+x = new FurnitureType();
+x.name = "sink1";
+x.imagePath = "Images/furniture/sink/sink (2).png";
+x.sizeX = 2;
+x.sizeY = 1;
+y.types.push(x);
+
+x = new FurnitureType();
+x.name = "sink2";
+x.imagePath = "Images/furniture/sink/sink (3).png";
+x.sizeX = 1;
+x.sizeY = 2;
+y.types.push(x);
+
+x = new FurnitureType();
+x.name = "sink3";
+x.imagePath = "Images/furniture/sink/sink (4).png";
+x.sizeX = 2;
+x.sizeY = 1;
+y.types.push(x);
+
+x = new FurnitureType();
+x.name = "sink4";
+x.imagePath = "Images/furniture/sink/sink (1).png";
+x.sizeX = 1;
+x.sizeY = 2;
+y.types.push(x);
+
+// Stove category
+y = new FurnitureCategory();
+y.name = "stove";
+
+x = new FurnitureType();
+x.name = "stove";
+x.imagePath = "Images/furniture/stovetop/stove.png";
+x.sizeX = 1;
+x.sizeY = 1;
+y.types.push(x);

@@ -38,6 +38,7 @@ class Clickable {
 
         this.drawFrame = true;
         this.textSize = 18;
+        this.imageScale = 1;
 
         this.paused = false;
 
@@ -138,8 +139,8 @@ class Clickable {
                     this.image,
                     ax,
                     ay,
-                    this.image.width * ratio * 0.9,
-                    this.image.height * ratio * 0.9,
+                    this.image.width * ratio * this.imageScale,
+                    this.image.height * ratio * this.imageScale
                 );
             } else {
                 imageMode(CORNER);

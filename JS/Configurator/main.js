@@ -30,6 +30,7 @@ function setup() {
     NewFurnitureClickable = new Clickable(0,-100,100,100,anchorTypes.BOTTOM);
     NewFurnitureClickable.image = currentFurnitureType.image;
     NewFurnitureClickable.constrainImage = true;
+    NewFurnitureClickable.imageScale = 0.9;
     NewFurnitureClickable.onPressed = function () {
         let newFurniture = new Furniture(this.realX,this.realY,100,100);
         newFurniture.setGridDimension(currentFurnitureType.sizeX, currentFurnitureType.sizeY);
@@ -51,6 +52,7 @@ function setup() {
     NextFurnitureClickable = new Clickable(100,-100,75,75,anchorTypes.BOTTOM);
     NextFurnitureClickable.image = loadImage("Images/buttons/next-01.png");
     NextFurnitureClickable.constrainImage = true;
+    NextFurnitureClickable.imageScale = 0.9;
     NextFurnitureClickable.onUnpressed = function () {
         currentFurnitureCategoryID++;
         if (currentFurnitureCategoryID > FurnitureCategories.length - 1) {currentFurnitureCategoryID = 0}
@@ -66,6 +68,7 @@ function setup() {
     PrevFurnitureClickable = new Clickable(-100,-100,75,75,anchorTypes.BOTTOM);
     PrevFurnitureClickable.image = loadImage("Images/buttons/Prev-01.png");
     PrevFurnitureClickable.constrainImage = true;
+    PrevFurnitureClickable.imageScale = 0.9;
     PrevFurnitureClickable.onUnpressed = function () {
         currentFurnitureCategoryID--;
         if (currentFurnitureCategoryID < 0) {currentFurnitureCategoryID =FurnitureCategories.length - 1}
@@ -81,6 +84,7 @@ function setup() {
     TurnFurnitureClickable = new Clickable(190,-100,75,75,anchorTypes.BOTTOM);
     TurnFurnitureClickable.image = loadImage("Images/buttons/Rotate-01.png");
     TurnFurnitureClickable.constrainImage = true;
+    TurnFurnitureClickable.imageScale = 0.9;
     TurnFurnitureClickable.onUnpressed = function () {
         currentFurnitureTypeID--;
         if (currentFurnitureTypeID < 0) {currentFurnitureTypeID = currentFurnitureCategory.types.length - 1}

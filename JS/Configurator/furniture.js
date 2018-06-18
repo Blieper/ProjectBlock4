@@ -185,14 +185,14 @@ class Furniture extends Clickable {
         }
 
             
-        // this.render = function (ax, ay) {
-        //     if (this.isPressed) {
-        //         this.hoverScaler = this.hoverScale * 0.95;
-        //     }
+        this.render = function (ax, ay) {
+            if (this.isPressed) {
+                this.hoverScaler = this.hoverScale * 0.95;
+            }
             
-        //     imageMode(CORNER);
-        //     image(this.image, ax - this.gridSizeX * gridSize * this.anchorX, ay - this.gridSizeY * gridSize * this.anchorY,this.gridSizeX * gridSize,this.gridSizeY * gridSize);
-        // }
+            imageMode(CORNER);
+            image(this.image, ax - this.gridSizeX * gridSize * this.anchorX, ay - this.gridSizeY * gridSize * this.anchorY,this.gridSizeX * gridSize,this.gridSizeY * gridSize);
+        }
     }
 
     throwInGarbage () {
